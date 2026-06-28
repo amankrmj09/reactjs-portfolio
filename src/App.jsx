@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AppProvider } from '@/context/AppContext';
 import { ReactLenis } from 'lenis/react';
@@ -15,7 +15,33 @@ import ThemeToggle from '@/components/shared/ThemeToggle';
 import { AuraBackground } from '@/components/shared/AuraBackground';
 import AnimatedRoutes from '@/components/layout/AnimatedRoutes';
 
+import ServerUnavailable from '@/components/ServerUnavailable/ServerUnavailable';
+import { apiClient } from '@/lib/axios';
+
 function App() {
+  const [isServerUp, setIsServerUp] = useState(null);
+
+  useEffect(() => {
+    const checkServer = async () => {
+      try {
+        await apiClient.get('/ping');
+        setIsServerUp(true);
+      } catch (error) {
+        console.error('Server ping failed:', error);
+        setIsServerUp(false);
+      }
+    };
+    checkServer();
+  }, []);
+
+  if (isServerUp === null) {
+    return <div className="min-h-screen bg-bg-base flex items-center justify-center text-text-primary">Loading...</div>;
+  }
+
+  if (isServerUp === false) {
+    return <ServerUnavailable />;
+  }
+
   return (
     <AppProvider>
       <ReactLenis root options={{ lerp: 0.05, smoothWheel: true, smoothTouch: true }}>
