@@ -1,0 +1,208 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bird-dark-depth: #1E3E73;
+  --color-bird-dark-shadow: #2C5AA0;
+  --color-bird-dark-highlight: #3A7BD5;
+  --color-bird-dark-soft: #5DADE2;
+
+  --color-bird-light-depth: #3A7BD5;
+  --color-bird-light-shadow: #5DADE2;
+  --color-bird-light-highlight: #7FB3E8;
+  --color-bird-light-soft: #A9CCE3;
+
+  /* We'll use a dark theme by default, falling back to these colors */
+  --color-bg-base: var(--bg-base);
+  --color-bg-glass: var(--bg-glass);
+  --color-border-glass: var(--border-glass);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-btn-hover-overlay: var(--btn-hover-overlay);
+
+  --color-white: var(--theme-white);
+  --color-slate-900: var(--theme-slate-900);
+  --color-slate-800: var(--theme-slate-800);
+  --color-slate-700: var(--theme-slate-700);
+  --color-slate-400: var(--theme-slate-400);
+  --color-slate-300: var(--theme-slate-300);
+  --color-slate-500: var(--theme-slate-500);
+}
+
+@layer base {
+  :root {
+    --theme-white: #ffffff;
+    --theme-slate-900: #0f172a;
+    --theme-slate-800: rgba(30, 41, 59, 0.5); /* Semi transparent for glass */
+    --theme-slate-700: rgba(255, 255, 255, 0.1);
+    --theme-slate-400: #94a3b8;
+    --theme-slate-300: #cbd5e1;
+    --theme-slate-500: #64748b;
+    --bg-base: #0f172a; /* Slate 900 */
+    --bg-glass: rgba(15, 23, 42, 0.6);
+    --border-glass: rgba(255, 255, 255, 0.1);
+    --btn-hover-overlay: rgba(0, 0, 0, 0.15);
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    
+    --primary-depth: #1E3E73;
+    --primary-shadow: #2C5AA0;
+    --primary-highlight: #3A7BD5;
+    --primary-soft: #5DADE2;
+  }
+
+  :root[data-theme="light"] {
+    --bg-base: #ffffff;
+    --bg-glass: rgba(255, 255, 255, 0.6);
+    --border-glass: rgba(0, 0, 0, 0.1);
+    --btn-hover-overlay: rgba(255, 255, 255, 0.15);
+    --text-primary: #08060d;
+    --text-secondary: #6b6375;
+    
+    --primary-depth: #3A7BD5;
+    --primary-shadow: #5DADE2;
+    --primary-highlight: #7FB3E8;
+    --primary-soft: #A9CCE3;
+
+    --theme-white: #08060d;
+    --theme-slate-900: #ffffff;
+    --theme-slate-800: rgba(255, 255, 255, 0.7);
+    --theme-slate-700: rgba(0, 0, 0, 0.1);
+    --theme-slate-400: #6b6375;
+    --theme-slate-300: #475569;
+    --theme-slate-500: #8b8398;
+  }
+
+  body {
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  /* Global Interactive Cursor Override */
+  button, 
+  [role="button"],
+  a {
+    cursor: pointer !important;
+  }
+
+  /* Custom Overlay Scrollbar */
+  html, body {
+    scrollbar-width: none; /* Completely hide in Firefox */
+  }
+
+  /* Completely transparent track and slim width */
+  ::-webkit-scrollbar {
+    width: 8px;
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+    border: none;
+  }
+
+  /* Completely transparent thumb by default */
+  ::-webkit-scrollbar-thumb {
+    background-color: transparent;
+    border-radius: 10px;
+    border: none;
+  }
+
+  /* ONLY show the thumb when cursor is actively hovering the scroll area */
+  :hover::-webkit-scrollbar-thumb,
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(93, 173, 226, 0.6); /* primary-soft with transparency */
+  }
+
+  /* Glassmorphism utilities */
+  .glass {
+    background: rgba(30, 62, 115, 0.15); /* Using bird dark depth with opacity */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .glass-card {
+    background: linear-gradient(145deg, rgba(44, 90, 160, 0.1) 0%, rgba(30, 62, 115, 0.2) 100%);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(93, 173, 226, 0.15); /* Bird dark soft */
+    border-radius: 16px;
+  }
+  
+  :root[data-theme="light"] .glass {
+    background: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+  }
+
+  :root[data-theme="light"] .glass-card {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 248, 255, 0.6) 100%);
+    border: 1px solid rgba(93, 173, 226, 0.3);
+  }
+  
+  .glass-card:hover {
+    border-color: rgba(93, 173, 226, 0.4);
+    transform: translateY(-2px);
+    transition: all 0.3s ease;
+  }
+
+  .text-gradient {
+    background: linear-gradient(to right, var(--primary-soft), var(--primary-highlight));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary-highlight), var(--primary-shadow));
+    color: white;
+    padding: 0.5rem 1.25rem;
+    border-radius: 9999px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+  }
+  
+  .btn-primary:hover {
+    box-shadow: 0 0 15px rgba(58, 123, 213, 0.5);
+    border-color: var(--primary-soft);
+  }
+
+  /* Global Hover Delay Enforcement */
+  @media (hover: hover) {
+    /* 1. Base state: 0s delay when NOT hovered (snap back immediately) */
+    [class*="hover:"], 
+    [class*="group-hover:"] {
+      transition-delay: 0s !important;
+    }
+    
+    /* 2. Hover state: wait 1 second before applying any hover styles */
+    [class*="hover:"]:hover,
+    .group:hover [class*="group-hover:"] {
+      transition-delay: 1s !important;
+    }
+  }
+}
+
+@keyframes blob {
+  0% { transform: translate(0px, 0px) scale(1); }
+  33% { transform: translate(30px, -50px) scale(1.1); }
+  66% { transform: translate(-20px, 20px) scale(0.9); }
+  100% { transform: translate(0px, 0px) scale(1); }
+}
+
+.animate-blob {
+  animation: blob 10s infinite alternate;
+}
+
+/* Hide scrollbar for carousels */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
