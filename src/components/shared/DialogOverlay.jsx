@@ -1,9 +1,11 @@
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
-import { ReactLenis } from 'lenis/react';
+import { ReactLenis, useLenis } from 'lenis/react';
 
 const DialogOverlay = ({ isOpen, onClose, children, title, noPadding }) => {
+  const lenis = useLenis();
+
   // Close on escape key
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -14,14 +16,16 @@ const DialogOverlay = ({ isOpen, onClose, children, title, noPadding }) => {
     
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      lenis?.stop();
       window.addEventListener('keydown', handleKeyDown);
     }
     
     return () => {
       document.body.style.overflow = 'unset';
+      lenis?.start();
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen, onClose]);
+  }, [isOpen, onClose, lenis]);
 
   return (
     <AnimatePresence>
@@ -33,7 +37,7 @@ const DialogOverlay = ({ isOpen, onClose, children, title, noPadding }) => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="absolute inset-0 bg-bg-base/80 backdrop-blur-sm"
+            className="absolute inset-0 bg-transparent backdrop-blur-sm"
           />
           
           {/* Modal Content */}
