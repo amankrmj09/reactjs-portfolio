@@ -31,7 +31,10 @@
     <meta property="twitter:image" content="https://amankrmj.dev/og-image.png" />
   </head>
   <body>
-    <div id="root"></div>
+    <!-- SEO Header for crawlers; React will overwrite this when it loads -->
+    <div id="root">
+      <h1 style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;">Aman Kumar - Software Developer Portfolio</h1>
+    </div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
