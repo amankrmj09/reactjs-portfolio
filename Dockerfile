@@ -10,6 +10,10 @@ RUN npm ci
 # Copy the rest of the application
 COPY . .
 
+# Accept VITE_BASE_URL as a build argument and set it as an environment variable
+ARG VITE_BASE_URL
+ENV VITE_BASE_URL=$VITE_BASE_URL
+
 # Build the Vite application
 RUN npm run build
 
