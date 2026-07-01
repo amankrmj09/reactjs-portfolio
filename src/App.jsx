@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AppProvider } from '@/context/AppContext';
 import { ReactLenis } from 'lenis/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import 'lenis/dist/lenis.css';
 
 // Pages handled by AnimatedRoutes
@@ -36,17 +37,20 @@ function App() {
 
   if (isServerUp === null) {
     return (
-      <div className="fixed inset-0 z-50 bg-slate-900 flex flex-col items-center justify-center">
-        <div className="relative">
-          {/* Outer rings */}
-          <div className="w-24 h-24 rounded-full border-t-2 border-primary-highlight border-solid animate-spin" style={{ animationDuration: '2s' }} />
-          <div className="w-20 h-20 rounded-full border-b-2 border-primary-soft border-solid absolute top-2 left-2 animate-spin" style={{ animationDuration: '1.5s', animationDirection: 'reverse' }} />
-          {/* Center dot */}
-          <div className="w-4 h-4 rounded-full bg-white absolute top-10 left-10 animate-pulse" />
-        </div>
-        <p className="mt-8 text-primary-soft font-medium tracking-widest uppercase text-sm animate-pulse">
-          Waking up server...
-        </p>
+      <div className="fixed inset-0 z-50 bg-bg-base flex flex-col items-center justify-center">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 0.8, repeat: Infinity, ease: "linear" }}
+          className="w-8 h-8 border-[2px] border-white/10 border-t-white rounded-full mb-6"
+        />
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.1 }}
+          className="text-white/60 font-mono tracking-[0.3em] uppercase text-[10px]"
+        >
+          Authenticating
+        </motion.div>
       </div>
     );
   }

@@ -14,19 +14,19 @@ const TechStackDialog = ({ isOpen, onClose, profile }) => {
               <h4 className="text-sm font-bold text-primary-highlight uppercase tracking-widest border-b border-border-glass pb-2">
                 {category.category}
               </h4>
-              <div className="flex flex-wrap gap-6 items-center">
+              <div className="flex flex-wrap gap-4 items-center">
                 {category.items.map((tech, tIdx) => (
-                  <div key={tIdx} className="flex flex-col items-center justify-center gap-2 group/tech w-16">
-                    {tech.icon ? (
-                      <div className="w-12 h-12 rounded-xl bg-bg-base/30 border border-border-glass flex items-center justify-center shadow-sm p-2 hover:bg-bg-base/60 transition-colors">
-                        <img src={tech.icon} alt={tech.name} className="w-full h-full object-contain group-hover/tech:scale-110 transition-transform" />
-                      </div>
-                    ) : (
-                      <div className="w-12 h-12 rounded-xl bg-bg-base/80 border border-border-glass flex items-center justify-center text-sm font-black text-primary-highlight shadow-sm hover:scale-110 transition-transform">
-                        {tech.name ? tech.name.substring(0, 2).toUpperCase() : '?'}
-                      </div>
-                    )}
-                    <span className="text-xs font-medium text-text-secondary text-center truncate w-full">{tech.name}</span>
+                  <div key={tIdx} className="flex items-center gap-3 bg-bg-base/30 border border-border-glass rounded-xl p-3 shadow-sm">
+                    <div className="w-10 h-10 rounded-lg bg-bg-base/40 flex items-center justify-center shrink-0">
+                      {tech.icon ? (
+                        <img src={tech.icon} alt={tech.name} className="w-6 h-6 object-contain" />
+                      ) : (
+                        <div className="text-sm font-black text-primary-highlight">
+                          {tech.name ? tech.name.substring(0, 2).toUpperCase() : '?'}
+                        </div>
+                      )}
+                    </div>
+                    <span className="text-sm font-medium text-text-primary pr-2">{tech.name}</span>
                   </div>
                 ))}
               </div>

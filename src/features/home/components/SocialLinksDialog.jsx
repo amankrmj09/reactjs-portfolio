@@ -27,13 +27,13 @@ const SocialLinksDialog = ({ isOpen, onClose, profile }) => {
                   href={link.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-3 bg-bg-base/30 border border-border-glass rounded-xl p-3 hover:bg-bg-base/60 hover:scale-[1.08] transition-all shadow-sm group"
+                  className="flex items-center gap-3 bg-bg-base/30 border border-border-glass rounded-xl p-3 shadow-sm"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-bg-base/40 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-lg bg-bg-base/40 flex items-center justify-center shrink-0">
                     {link.icon ? (
-                      <img src={link.icon} alt={link.name} className="w-6 h-6 object-contain grayscale group-hover:grayscale-0 transition-all" />
+                      <img src={link.icon} alt={link.name} className="w-6 h-6 object-contain" />
                     ) : (
-                      <ExternalLink size={20} className="text-text-secondary group-hover:text-text-primary" />
+                      <ExternalLink size={20} className="text-text-secondary" />
                     )}
                   </div>
                   <span className="text-sm font-medium text-text-primary pr-2">{link.name}</span>
@@ -56,13 +56,13 @@ const SocialLinksDialog = ({ isOpen, onClose, profile }) => {
                   href={link.url}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center gap-3 bg-bg-base/30 border border-border-glass rounded-xl p-3 hover:bg-bg-base/60 hover:scale-[1.08] transition-all shadow-sm group"
+                  className="flex items-center gap-3 bg-bg-base/30 border border-border-glass rounded-xl p-3 shadow-sm"
                 >
-                  <div className="w-10 h-10 rounded-lg bg-bg-base/40 flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-lg bg-bg-base/40 flex items-center justify-center shrink-0">
                     {link.icon ? (
-                      <img src={link.icon} alt={link.name} className="w-6 h-6 object-contain grayscale group-hover:grayscale-0 transition-all" />
+                      <img src={link.icon} alt={link.name} className="w-6 h-6 object-contain" />
                     ) : (
-                      <ExternalLink size={20} className="text-text-secondary group-hover:text-text-primary" />
+                      <ExternalLink size={20} className="text-text-secondary" />
                     )}
                   </div>
                   <span className="text-sm font-medium text-text-primary pr-2">{link.name}</span>
