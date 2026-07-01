@@ -460,7 +460,7 @@ const AboutSection = () => {
                                                     {interestsRows[currentInterestsRowIndex]?.map((interest, idx) => (
                                                         <motion.span key={idx}
                                                               variants={staggerItem}
-                                                              className="px-3 py-1 bg-bg-base/50 border border-border-glass rounded-full text-xs font-medium text-text-primary hover:bg-bg-base/80 transition-colors whitespace-nowrap">
+                                                              className="inline-flex items-center justify-center px-3 py-1.5 leading-none bg-bg-base/50 border border-border-glass rounded-full text-xs font-medium text-text-primary hover:bg-bg-base/80 transition-colors whitespace-nowrap">
                                                           {interest}
                                                         </motion.span>
                                                     ))}
@@ -491,7 +491,7 @@ const AboutSection = () => {
                                                     {techInterestsRows[currentTechInterestsRowIndex]?.map((interest, idx) => (
                                                         <motion.span key={idx}
                                                               variants={staggerItem}
-                                                              className="px-3 py-1 bg-bg-base/50 border border-border-glass rounded-full text-xs font-medium text-text-primary hover:bg-bg-base/80 transition-colors whitespace-nowrap">
+                                                              className="inline-flex items-center justify-center px-3 py-1.5 leading-none bg-bg-base/50 border border-border-glass rounded-full text-xs font-medium text-text-primary hover:bg-bg-base/80 transition-colors whitespace-nowrap">
                                                           {interest}
                                                         </motion.span>
                                                     ))}
