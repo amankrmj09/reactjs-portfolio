@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, Download, Loader2 } from 'lucide-react';
+import { ArrowLeft, Download, Loader2, Globe } from 'lucide-react';
+import { FaGithub, FaGooglePlay, FaApple, FaFigma } from 'react-icons/fa';
 import { useLenis } from 'lenis/react';
 import { getResume } from '../api/resumeApi';
+import ProjectLinkButton from '@/components/shared/ProjectLinkButton';
 
 import { useAppContext } from '@/context/AppContext';
 
@@ -143,8 +145,8 @@ const ResumePage = () => {
                     const isString = typeof item === 'string';
                     // Dynamic mappings based on the actual backend data structure
                     const itemTitle = item.title || item.name || item.institution || item.company;
-                    const itemSubtitle = item.subtitle || item.role || item.degree || item.issuer || item.event;
-                    const itemDate = item.dateRange || item.duration;
+                    const itemSubtitle = (item.type && item.issuer) ? `${item.type} : ${item.issuer}` : (item.subtitle || item.role || item.degree || item.issuer || item.event);
+                    const itemDate = item.dateRange || item.duration || item.date;
                     const itemDesc = item.description || item.content || item.summary;
                     const itemLocation = item.location;
                     const itemTechStack = item.techStack;
@@ -164,7 +166,7 @@ const ResumePage = () => {
                                   <p className="text-primary-highlight font-semibold text-[clamp(0.875rem,3vw,1.125rem)]">{itemSubtitle}</p>
                                 )}
                               </div>
-                              <div className="flex flex-row flex-wrap items-center w-full justify-between sm:w-auto sm:justify-end gap-3 shrink-0 mt-3 sm:mt-0">
+                              <div className="flex flex-col items-start sm:items-end gap-2 shrink-0 mt-3 sm:mt-0">
                                 {itemDate && (
                                   <span className="text-[clamp(0.7rem,2vw,0.875rem)] font-semibold text-text-secondary bg-bg-base/80 border border-border-glass px-3 py-1.5 rounded-full shadow-sm whitespace-nowrap">
                                     {itemDate}
@@ -204,6 +206,63 @@ const ResumePage = () => {
                                   </li>
                                 ))}
                               </ul>
+                            )}
+                            
+                            {/* Project Links / URLs */}
+                            {(item.links || item.url || item.certificateUrl) && (
+                              <div className="mt-6 pt-5 border-t border-border-glass/50 flex flex-wrap items-center w-full gap-4 relative z-10">
+                                {item.links?.repo && (
+                                  <>
+                                    <a href={item.links.repo} target="_blank" rel="noreferrer" className="sm:hidden w-10 h-10 flex items-center justify-center rounded-full bg-transparent ring-1 ring-border-glass hover:ring-2 hover:ring-text-primary hover:bg-bg-base/40 text-text-primary transition-all group" title="Repository">
+                                      <FaGithub size={18} className="drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
+                                    </a>
+                                    <div className="hidden sm:block">
+                                      <ProjectLinkButton 
+                                        href={item.links.repo} 
+                                        text="Repository" 
+                                        icon={FaGithub}
+                                        hoverBgClass="bg-slate-400/30"
+                                        iconClass="group-hover:text-text-primary group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] text-text-secondary"
+                                        className="h-[40px] px-5 text-xs"
+                                      />
+                                    </div>
+                                  </>
+                                )}
+                                {item.links?.live && (
+                                  <>
+                                    <a href={item.links.live} target="_blank" rel="noreferrer" className="sm:hidden w-10 h-10 flex items-center justify-center rounded-full bg-transparent ring-1 ring-border-glass hover:ring-2 hover:ring-primary-soft hover:bg-bg-base/40 text-text-secondary hover:text-primary-soft transition-all group" title="Live Demo">
+                                      <Globe size={18} className="drop-shadow-[0_0_8px_rgba(74,222,128,0.5)]" />
+                                    </a>
+                                    <div className="hidden sm:block">
+                                      <ProjectLinkButton 
+                                        href={item.links.live} 
+                                        text="Live Demo" 
+                                        icon={Globe}
+                                        hoverBgClass="bg-primary-soft/30"
+                                        iconClass="group-hover:text-primary-soft group-hover:drop-shadow-[0_0_8px_rgba(93,173,226,0.8)] text-text-secondary"
+                                        className="h-[40px] px-5 text-xs"
+                                      />
+                                    </div>
+                                  </>
+                                )}
+                                {(item.url || item.certificateUrl) && !item.links?.live && (
+                                  <>
+                                    <a href={item.url || item.certificateUrl} target="_blank" rel="noreferrer" className="sm:hidden w-10 h-10 flex items-center justify-center rounded-full bg-transparent ring-1 ring-border-glass hover:ring-2 hover:ring-primary-soft hover:bg-bg-base/40 text-text-secondary hover:text-primary-soft transition-all group" title="View Link">
+                                      <Globe size={18} className="drop-shadow-[0_0_8px_rgba(74,222,128,0.5)]" />
+                                    </a>
+                                    <div className="hidden sm:block">
+                                      <ProjectLinkButton 
+                                        href={item.url || item.certificateUrl} 
+                                        text="View Link" 
+                                        icon={Globe}
+                                        hoverBgClass="bg-primary-soft/30"
+                                        iconClass="group-hover:text-primary-soft group-hover:drop-shadow-[0_0_8px_rgba(93,173,226,0.8)] text-text-secondary"
+                                        className="h-[40px] px-5 text-xs"
+                                      />
+                                    </div>
+                                  </>
+                                )}
+                              </div>
                             )}
                           </>
                         )}

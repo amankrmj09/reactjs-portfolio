@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 const usernames = ["Eren Yeager", "Mikasa Ackerman", "Armin Arlert", "Levi Ackerman", "Erwin Smith"];
@@ -17,6 +17,8 @@ const TerminalAnimation = ({ commands = [] }) => {
   const [cmdIndex, setCmdIndex] = useState(0);
   const [step, setStep] = useState(0); 
   const [typedText, setTypedText] = useState('');
+  const [visibleOutputLines, setVisibleOutputLines] = useState([]);
+  const scrollRef = useRef(null);
 
   const activeCommands = commands && commands.length > 0 ? commands : [
     {
@@ -146,9 +148,27 @@ const TerminalAnimation = ({ commands = [] }) => {
         setStep(2);
       }, 2000);
     } else if (step === 2) {
-      timeout = setTimeout(() => {
-        setStep(3);
-      }, 3000); 
+      const outputText = currentCmd?.output || '';
+      const lines = outputText ? outputText.split('\n') : [];
+      let currentLineIdx = 0;
+      setVisibleOutputLines([]);
+      
+      if (lines.length > 0) {
+        typeInterval = setInterval(() => {
+          setVisibleOutputLines((prev) => [...prev, lines[currentLineIdx]]);
+          currentLineIdx++;
+          if (currentLineIdx >= lines.length) {
+            clearInterval(typeInterval);
+            timeout = setTimeout(() => {
+              setStep(3);
+            }, 3000);
+          }
+        }, 150);
+      } else {
+        timeout = setTimeout(() => {
+          setStep(3);
+        }, 3000); 
+      }
     } else if (step === 3) {
       let currentIndex = 0;
       setTypedText('');
@@ -175,6 +195,12 @@ const TerminalAnimation = ({ commands = [] }) => {
     };
   }, [step, cmdIndex, activeCommands, isBootSequence]);
 
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [typedText, step, bootStep, cmdIndex, visibleOutputLines, isBootSequence]);
+
   const getStatusColorClass = (color) => {
     switch (color) {
       case 'red': return 'text-[#ff5f56]';
@@ -188,9 +214,9 @@ const TerminalAnimation = ({ commands = [] }) => {
     if (bootStep < 4) {
       return (
         <>
-          <div className="flex gap-[6px]">
-            <span className="font-semibold text-text-primary">skynet : ~%</span>
-            <span>{bootStep === 0 ? typedText : `ssh ${username}@blubug.tech`}</span>
+          <div className="break-words whitespace-pre-wrap">
+            <span className="font-semibold text-text-primary mr-1.5">skynet : ~%</span>
+            <span className="break-all sm:break-normal">{bootStep === 0 ? typedText : `ssh ${username}@blubug.tech`}</span>
             {bootStep === 0 && (
               <motion.span 
                 animate={{ opacity: [1, 0] }} 
@@ -211,9 +237,9 @@ const TerminalAnimation = ({ commands = [] }) => {
             </div>
           )}
           {bootStep >= 3 && (
-            <div className="mt-4 flex gap-[6px]">
-              <span className="font-semibold text-text-primary">{`${username}@blubug.tech:~$`}</span>
-              <span>{typedText}</span>
+            <div className="mt-4 break-words whitespace-pre-wrap">
+              <span className="font-semibold text-text-primary mr-1.5">{`${username}@blubug.tech:~$`}</span>
+              <span className="break-all sm:break-normal">{typedText}</span>
               <motion.span 
                 animate={{ opacity: [1, 0] }} 
                 transition={{ repeat: Infinity, duration: 0.8 }}
@@ -225,8 +251,8 @@ const TerminalAnimation = ({ commands = [] }) => {
       );
     }
     return (
-      <div className="flex gap-[6px]">
-        <span className="font-semibold text-text-primary">{`${username}@blubug.tech:~$`}</span>
+      <div className="break-words whitespace-pre-wrap">
+        <span className="font-semibold text-text-primary mr-1.5">{`${username}@blubug.tech:~$`}</span>
         <motion.span 
           animate={{ opacity: [1, 0] }} 
           transition={{ repeat: Infinity, duration: 0.8 }}
@@ -240,9 +266,9 @@ const TerminalAnimation = ({ commands = [] }) => {
     if (step < 4) {
       return (
         <>
-          <div className="flex gap-[6px]">
-            <span className="font-semibold text-text-primary">{promptText}</span>
-            <span>{step === 0 ? typedText : (currentCmd?.command || '')}</span>
+          <div className="break-words whitespace-pre-wrap">
+            <span className="font-semibold text-text-primary mr-1.5">{promptText}</span>
+            <span className="break-all sm:break-normal">{step === 0 ? typedText : (currentCmd?.command || '')}</span>
             {step === 0 && (
               <motion.span 
                 animate={{ opacity: [1, 0] }} 
@@ -264,11 +290,13 @@ const TerminalAnimation = ({ commands = [] }) => {
               ) : (
                 <div className="mt-3 text-text-secondary">
                   {currentCmd?.output && (
-                    <pre className="leading-snug">
-                      {currentCmd.output}
-                    </pre>
+                    <div className="leading-snug whitespace-pre-wrap font-mono">
+                      {visibleOutputLines.map((line, idx) => (
+                        <div key={idx}>{line}</div>
+                      ))}
+                    </div>
                   )}
-                  {currentCmd?.statusLine && (
+                  {currentCmd?.statusLine && visibleOutputLines.length >= (currentCmd?.output?.split('\n').length || 0) && (
                     <div className={`mt-2 font-bold ${getStatusColorClass(currentCmd.statusColor)}`}>
                       {currentCmd.statusLine}
                     </div>
@@ -278,9 +306,9 @@ const TerminalAnimation = ({ commands = [] }) => {
             </div>
           )}
           {step >= 2 && (
-            <div className="mt-4 flex gap-[6px]">
-              <span className="font-semibold text-text-primary">{promptText}</span>
-              <span>{step === 3 ? typedText : ''}</span>
+            <div className="mt-4 break-words whitespace-pre-wrap">
+              <span className="font-semibold text-text-primary mr-1.5">{promptText}</span>
+              <span className="break-all sm:break-normal">{step === 3 ? typedText : ''}</span>
               <motion.span 
                 animate={{ opacity: [1, 0] }} 
                 transition={{ repeat: Infinity, duration: 0.8 }}
@@ -292,8 +320,8 @@ const TerminalAnimation = ({ commands = [] }) => {
       );
     }
     return (
-      <div className="flex gap-[6px]">
-        <span className="font-semibold text-text-primary">{promptText}</span>
+      <div className="break-words whitespace-pre-wrap">
+        <span className="font-semibold text-text-primary mr-1.5">{promptText}</span>
         <motion.span 
           animate={{ opacity: [1, 0] }} 
           transition={{ repeat: Infinity, duration: 0.8 }}
@@ -324,7 +352,10 @@ const TerminalAnimation = ({ commands = [] }) => {
         </div>
       </div>
       
-      <div className="p-4 font-mono text-[13px] leading-[1.4] text-text-primary min-h-[240px]">
+      <div 
+        ref={scrollRef}
+        className="p-4 font-mono text-[13px] leading-[1.4] text-text-primary h-[200px] md:h-[240px] lg:h-[280px] overflow-y-auto scroll-smooth [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/20 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/30"
+      >
         {isBootSequence ? renderBootContent() : renderNormalContent()}
       </div>
     </motion.div>

@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { ReactLenis, useLenis } from 'lenis/react';
@@ -27,10 +28,10 @@ const DialogOverlay = ({ isOpen, onClose, children, title, noPadding }) => {
     };
   }, [isOpen, onClose, lenis]);
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-6">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-2 sm:p-6">
           {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -72,7 +73,8 @@ const DialogOverlay = ({ isOpen, onClose, children, title, noPadding }) => {
           </motion.div>
         </div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 };
 
