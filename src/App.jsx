@@ -35,7 +35,20 @@ function App() {
   }, []);
 
   if (isServerUp === null) {
-    return <div className="min-h-screen bg-bg-base flex items-center justify-center text-text-primary">Loading...</div>;
+    return (
+      <div className="fixed inset-0 z-50 bg-slate-900 flex flex-col items-center justify-center">
+        <div className="relative">
+          {/* Outer rings */}
+          <div className="w-24 h-24 rounded-full border-t-2 border-primary-highlight border-solid animate-spin" style={{ animationDuration: '2s' }} />
+          <div className="w-20 h-20 rounded-full border-b-2 border-primary-soft border-solid absolute top-2 left-2 animate-spin" style={{ animationDuration: '1.5s', animationDirection: 'reverse' }} />
+          {/* Center dot */}
+          <div className="w-4 h-4 rounded-full bg-white absolute top-10 left-10 animate-pulse" />
+        </div>
+        <p className="mt-8 text-primary-soft font-medium tracking-widest uppercase text-sm animate-pulse">
+          Waking up server...
+        </p>
+      </div>
+    );
   }
 
   if (isServerUp === false) {

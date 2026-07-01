@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useAppContext } from '@/context/AppContext';
 import HeroSection from '../components/HeroSection';
 import LoadingScreen from '@/components/sections/LoadingScreen';
 import AboutSection from '../components/AboutSection';
@@ -10,6 +11,7 @@ import FooterSection from '@/components/sections/FooterSection';
 
 const HomePage = () => {
   const location = useLocation();
+  const { isLoading } = useAppContext();
   const [activeHash, setActiveHash] = useState(location.hash || '#home');
 
   useEffect(() => {
@@ -22,24 +24,28 @@ const HomePage = () => {
     <div className="min-h-screen">
       <LoadingScreen />
       
-      <div className={`${isActive('home') ? 'block' : 'hidden'} md:block`}>
-        <HeroSection />
-      </div>
-      <div className={`${isActive('about') ? 'block' : 'hidden'} md:block`}>
-        <AboutSection />
-      </div>
-      <div className={`${isActive('works') ? 'block' : 'hidden'} md:block`}>
-        <WorksSection />
-      </div>
-      <div className={`${isActive('certificates') ? 'block' : 'hidden'} md:block`}>
-        <CertificatesSection />
-      </div>
-      <div className={`${isActive('contact') ? 'block' : 'hidden'} md:block`}>
-        <ContactSection />
-      </div>
-      <div className={`${isActive('contact') ? 'block' : 'hidden'} md:block`}>
-        <FooterSection />
-      </div>
+      {!isLoading && (
+        <>
+          <div className={`${isActive('home') ? 'block' : 'hidden'} md:block`}>
+            <HeroSection />
+          </div>
+          <div className={`${isActive('about') ? 'block' : 'hidden'} md:block`}>
+            <AboutSection />
+          </div>
+          <div className={`${isActive('works') ? 'block' : 'hidden'} md:block`}>
+            <WorksSection />
+          </div>
+          <div className={`${isActive('certificates') ? 'block' : 'hidden'} md:block`}>
+            <CertificatesSection />
+          </div>
+          <div className={`${isActive('contact') ? 'block' : 'hidden'} md:block`}>
+            <ContactSection />
+          </div>
+          <div className={`${isActive('contact') ? 'block' : 'hidden'} md:block`}>
+            <FooterSection />
+          </div>
+        </>
+      )}
     </div>
   );
 };
