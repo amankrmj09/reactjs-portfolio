@@ -15,6 +15,7 @@ const ResumePage = () => {
   const [activeSection, setActiveSection] = useState('');
   const lenis = useLenis();
   const navigate = useNavigate();
+  const [isNavExpanded, setIsNavExpanded] = useState(false);
 
   // Intersection Observer for active section
   useEffect(() => {
@@ -60,6 +61,21 @@ const ResumePage = () => {
     window.scrollTo(0, 0);
   }, [contextResume]);
 
+  // Click outside to collapse side nav
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (isNavExpanded && !e.target.closest('#resume-side-nav')) {
+        setIsNavExpanded(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener('touchstart', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('touchstart', handleClickOutside);
+    };
+  }, [isNavExpanded]);
+
   return (
     <div className="min-h-screen pt-28 px-2 sm:px-4 lg:px-6 max-w-4xl mx-auto pb-[40vh]">
       
@@ -97,7 +113,11 @@ const ResumePage = () => {
       ) : resumeContent ? (
         <>
           {/* Floating Navigation Sidebar */}
-          <div className="hidden lg:flex fixed right-8 xl:right-16 top-1/2 -translate-y-1/2 z-50 flex-col gap-4 py-5 px-4 glass rounded-2xl border border-border-glass shadow-xl group transition-all duration-300">
+          <div 
+            id="resume-side-nav"
+            onClick={() => setIsNavExpanded(!isNavExpanded)}
+            className="hidden lg:flex fixed right-8 xl:right-16 top-1/2 -translate-y-1/2 z-50 flex-col gap-4 py-5 px-4 glass rounded-2xl border border-border-glass shadow-xl group transition-all duration-200 cursor-pointer"
+          >
             {resumeContent.sections?.sort((a, b) => a.order - b.order).map((section, idx) => {
               const id = (section.title || section.type).toLowerCase().replace(/\s+/g, '-');
               const isActive = activeSection === id;
@@ -109,6 +129,8 @@ const ResumePage = () => {
                   href={`#${id}`}
                   onClick={(e) => {
                     e.preventDefault();
+                    e.stopPropagation();
+                    setIsNavExpanded(false);
                     if (lenis) {
                       lenis.scrollTo(`#${id}`, { offset: -128, duration: 1.2 });
                     } else {
@@ -117,11 +139,11 @@ const ResumePage = () => {
                   }}
                   className="flex items-center justify-end gap-3 cursor-pointer group/item"
                 >
-                  <span className={`text-sm font-medium capitalize whitespace-nowrap overflow-hidden transition-all duration-300 max-w-0 opacity-0 group-hover:max-w-[200px] group-hover:opacity-100 ${isActive ? 'text-text-primary' : 'text-text-secondary group-hover/item:text-text-primary'}`}>
+                  <span className={`text-sm font-medium capitalize whitespace-nowrap overflow-hidden transition-all duration-200 ${isNavExpanded ? 'max-w-[200px] opacity-100' : 'max-w-0 opacity-0 group-hover:max-w-[200px] group-hover:opacity-100'} ${isActive ? 'text-text-primary' : 'text-text-secondary group-hover/item:text-text-primary'}`}>
                     {title}
                   </span>
                   <div className="w-6 flex justify-end items-center">
-                    <div className={`h-1.5 rounded-full transition-all duration-300 ${isActive ? 'w-6 bg-text-primary' : 'w-2 bg-border-glass group-hover/item:bg-text-secondary group-hover/item:w-4'}`}></div>
+                    <div className={`h-1.5 rounded-full transition-all duration-200 ${isActive ? 'w-6 bg-text-primary' : 'w-2 bg-border-glass group-hover/item:bg-text-secondary group-hover/item:w-4'}`}></div>
                   </div>
                 </a>
               );

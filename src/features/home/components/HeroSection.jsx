@@ -135,7 +135,7 @@ const HeroSection = () => {
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.6 }}
+          transition={{ duration: 0.5 }}
           className="w-full mt-auto pt-4 pb-4 flex flex-col xl:flex-row items-center justify-between gap-8"
         >
           {/* Left: CTA Buttons */}
