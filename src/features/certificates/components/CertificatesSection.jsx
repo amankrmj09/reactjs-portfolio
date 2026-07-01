@@ -1,28 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Loader2 } from 'lucide-react';
-import { getCertificates } from '../api/certificatesApi';
+import { useAppContext } from '@/context/AppContext';
 import CertificateCard from './CertificateCard';
 import ActionButton from '@/components/shared/ActionButton';
 
 const CertificatesSection = () => {
-  const [certificates, setCertificates] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchCertificates = async () => {
-      try {
-        const data = await getCertificates(0, 4);
-        setCertificates(Array.isArray(data) ? data : data?.content || []);
-      } catch (err) {
-        console.error('Failed to fetch certificates', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCertificates();
-  }, []);
+  const { recentCertificates, isLoading } = useAppContext();
 
   return (
     <section id="certificates" className="min-h-screen  flex flex-col pt-[100px] pb-[20px] px-4 lg:px-8 w-full relative">
@@ -51,14 +36,14 @@ const CertificatesSection = () => {
           />
         </div>
 
-        {loading ? (
+        {isLoading ? (
           <div className="flex justify-center py-12">
             <Loader2 className="animate-spin text-primary-soft" size={32} />
           </div>
         ) : (
           <>
             <div className="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-6 pb-8 pt-4 px-2 -mx-2 mt-4 md:mt-0">
-              {certificates.map((cert, index) => (
+              {recentCertificates.map((cert, index) => (
                 <CertificateCard key={cert.id} certificate={cert} index={index} />
               ))}
             </div>

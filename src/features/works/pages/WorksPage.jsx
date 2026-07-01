@@ -1,26 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Loader2 } from 'lucide-react';
-import { getWorks } from '../api/worksApi';
+import { useAppContext } from '@/context/AppContext';
 import ProjectCard from '../components/ProjectCard';
 
 const WorksPage = () => {
-  const [works, setWorks] = useState([]);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { allWorks, isAllWorksLoaded, loadAllWorks } = useAppContext();
 
   useEffect(() => {
-    const fetchWorks = async () => {
-      try {
-        const data = await getWorks(0, 50); // Get a lot for now, or implement actual pagination
-        setWorks(Array.isArray(data) ? data : data?.content || []);
-      } catch (err) {
-        console.error('Failed to fetch works', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchWorks();
+    loadAllWorks();
     window.scrollTo(0, 0);
   }, []);
 
@@ -52,16 +41,16 @@ const WorksPage = () => {
         </div>
       </div>
       
-      {loading ? (
+      {!isAllWorksLoaded ? (
         <div className="flex justify-center py-24">
           <Loader2 className="animate-spin text-primary-soft" size={48} />
         </div>
       ) : (
         <div className="flex flex-wrap justify-center gap-6">
-          {works.map((work, index) => (
+          {allWorks.map((work, index) => (
             <ProjectCard key={work.id} project={work} index={index} />
           ))}
-          {works.length === 0 && (
+          {allWorks.length === 0 && (
             <p className="text-slate-400 col-span-full text-center">No works found.</p>
           )}
         </div>

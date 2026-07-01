@@ -1,28 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Loader2 } from 'lucide-react';
-import { getWorks } from '../api/worksApi';
+import { useAppContext } from '@/context/AppContext';
 import ProjectCard from './ProjectCard';
 import ActionButton from '@/components/shared/ActionButton';
 
 const WorksSection = () => {
-  const [works, setWorks] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchWorks = async () => {
-      try {
-        const data = await getWorks(0, 4);
-        setWorks(Array.isArray(data) ? data : data?.content || []);
-      } catch (err) {
-        console.error('Failed to fetch works', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchWorks();
-  }, []);
+  const { recentWorks, isLoading } = useAppContext();
 
   return (
     <section id="works" className="min-h-screen  flex flex-col pt-[100px] pb-[20px] px-4 lg:px-8 w-full relative">
@@ -51,14 +36,14 @@ const WorksSection = () => {
           />
         </div>
 
-        {loading ? (
+        {isLoading ? (
           <div className="flex justify-center py-12">
             <Loader2 className="animate-spin text-primary-soft" size={32} />
           </div>
         ) : (
           <>
             <div className="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory gap-6 pb-8 pt-4 px-2 -mx-2 mt-4 md:mt-0">
-              {works.map((work, index) => (
+              {recentWorks.map((work, index) => (
                 <ProjectCard key={work.id} project={work} index={index} />
               ))}
             </div>

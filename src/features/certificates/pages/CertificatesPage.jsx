@@ -1,26 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Loader2 } from 'lucide-react';
-import { getCertificates } from '../api/certificatesApi';
+import { useAppContext } from '@/context/AppContext';
 import CertificateCard from '../components/CertificateCard';
 
 const CertificatesPage = () => {
-  const [certificates, setCertificates] = useState([]);
-  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const { allCertificates, isAllCertificatesLoaded, loadAllCertificates } = useAppContext();
 
   useEffect(() => {
-    const fetchCertificates = async () => {
-      try {
-        const data = await getCertificates(0, 50);
-        setCertificates(Array.isArray(data) ? data : data?.content || []);
-      } catch (err) {
-        console.error('Failed to fetch certificates', err);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchCertificates();
+    loadAllCertificates();
     window.scrollTo(0, 0);
   }, []);
 
@@ -52,16 +41,16 @@ const CertificatesPage = () => {
         </div>
       </div>
       
-      {loading ? (
+      {!isAllCertificatesLoaded ? (
         <div className="flex justify-center py-24">
           <Loader2 className="animate-spin text-primary-soft" size={48} />
         </div>
       ) : (
         <div className="flex flex-wrap justify-center gap-6">
-          {certificates.map((cert, index) => (
+          {allCertificates.map((cert, index) => (
             <CertificateCard key={cert.id} certificate={cert} index={index} />
           ))}
-          {certificates.length === 0 && (
+          {allCertificates.length === 0 && (
             <p className="text-slate-400 col-span-full text-center">No certificates found.</p>
           )}
         </div>

@@ -2,14 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { motion, animate, AnimatePresence } from 'framer-motion';
 import { FaGithub, FaLinkedin, FaInstagram, FaCode, FaDiscord, FaGitlab, FaArrowRight, FaEye } from 'react-icons/fa';
 import { useAppContext } from '@/context/AppContext';
-import { incrementStats, getSiteConfig } from '@/features/site-config/api/siteConfigApi';
 import TerminalAnimation from '@/components/shared/TerminalAnimation';
 import ActionButton from '@/components/shared/ActionButton';
 
 const HeroSection = () => {
-  const { profile, siteConfig } = useAppContext();
-  const [totalVisitorCount, setTotalVisitorCount] = useState(null);
-  const [personalVisitorNumber, setPersonalVisitorNumber] = useState(null);
+  const { profile, siteConfig, totalVisitorCount, personalVisitorNumber } = useAppContext();
   const [currentTaglineIndex, setCurrentTaglineIndex] = useState(0);
 
   useEffect(() => {
@@ -21,40 +18,6 @@ const HeroSection = () => {
       return () => clearInterval(interval);
     }
   }, [siteConfig?.taglines]);
-
-  useEffect(() => {
-    const manageVisitorCount = async () => {
-      try {
-        const storedVisitorNumber = localStorage.getItem('visitor_number');
-        let data;
-        
-        if (!storedVisitorNumber) {
-          data = await incrementStats();
-          if (data && data.count != null) {
-            localStorage.setItem('visitor_number', data.count.toString());
-            setPersonalVisitorNumber(data.count);
-          }
-        } else {
-          setPersonalVisitorNumber(parseInt(storedVisitorNumber, 10));
-          data = await getSiteConfig();
-        }
-        
-        if (data && data.count != null) {
-          animate(0, data.count, {
-            duration: 2,
-            ease: "easeOut",
-            onUpdate: (latest) => setTotalVisitorCount(Math.round(latest))
-          });
-        } else if (data && data.count == null) {
-          setTotalVisitorCount(0);
-          if (!storedVisitorNumber) setPersonalVisitorNumber(0);
-        }
-      } catch (err) {
-        console.error('Failed to fetch/increment visitor count:', err);
-      }
-    };
-    manageVisitorCount();
-  }, []);
 
   if (!profile) return null;
 

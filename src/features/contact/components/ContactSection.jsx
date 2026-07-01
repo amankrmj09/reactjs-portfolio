@@ -134,7 +134,7 @@ const ContactSection = () => {
                         required 
                         maxLength={50}
                         className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl focus:outline-none focus:border-primary-soft focus:ring-1 focus:ring-primary-soft text-text-primary transition-all" 
-                        placeholder="Jane Smith"
+                        placeholder="Enter full name"
                       />
                     </div>
                     <div className="flex flex-col gap-2">
@@ -147,7 +147,7 @@ const ContactSection = () => {
                         required 
                         maxLength={100}
                         className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl focus:outline-none focus:border-primary-soft focus:ring-1 focus:ring-primary-soft text-text-primary transition-all" 
-                        placeholder="jane@company.com"
+                        placeholder="Enter email address"
                       />
                     </div>
                   </div>
@@ -162,7 +162,7 @@ const ContactSection = () => {
                         onChange={handleChange} 
                         maxLength={20}
                         className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl focus:outline-none focus:border-primary-soft focus:ring-1 focus:ring-primary-soft text-text-primary transition-all" 
-                        placeholder="+1 (234) 567-8900"
+                        placeholder="Enter phone number"
                       />
                     </div>
                     <div className="flex flex-col gap-2">
@@ -174,7 +174,7 @@ const ContactSection = () => {
                         onChange={handleChange} 
                         maxLength={50}
                         className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl focus:outline-none focus:border-primary-soft focus:ring-1 focus:ring-primary-soft text-text-primary transition-all" 
-                        placeholder="@yourhandle"
+                        placeholder="Enter Instagram handle"
                       />
                     </div>
                   </div>
@@ -194,7 +194,7 @@ const ContactSection = () => {
                       rows="4"
                       maxLength={250}
                       className="px-4 py-3 bg-slate-800 border border-slate-700 rounded-xl focus:outline-none focus:border-primary-soft focus:ring-1 focus:ring-primary-soft text-text-primary transition-all resize-none" 
-                      placeholder="Tell me about your project..."
+                      placeholder="Enter your message"
                     ></textarea>
                   </div>
                   

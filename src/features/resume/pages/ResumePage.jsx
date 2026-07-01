@@ -10,7 +10,7 @@ import { useAppContext } from '@/context/AppContext';
 
 const ResumePage = () => {
   const { resumeData: contextResume } = useAppContext();
-  const [resume, setResume] = useState(null);
+  const [resumeContent, setResumeContent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState('');
   const lenis = useLenis();
@@ -18,7 +18,7 @@ const ResumePage = () => {
 
   // Intersection Observer for active section
   useEffect(() => {
-    if (!resume?.sections) return;
+    if (!resumeContent?.sections) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -31,24 +31,24 @@ const ResumePage = () => {
       { rootMargin: '-20% 0px -60% 0px', threshold: 0 }
     );
 
-    resume.sections.forEach((section) => {
+    resumeContent.sections.forEach((section) => {
       const id = (section.title || section.type).toLowerCase().replace(/\s+/g, '-');
       const element = document.getElementById(id);
       if (element) observer.observe(element);
     });
 
     return () => observer.disconnect();
-  }, [resume]);
+  }, [resumeContent]);
 
   useEffect(() => {
     if (contextResume) {
-      setResume(contextResume);
+      setResumeContent(contextResume);
       setLoading(false);
     } else {
       const fetchResume = async () => {
         try {
           const data = await getResume();
-          setResume(data);
+          setResumeContent(data);
         } catch (err) {
           console.error('Failed to fetch resume', err);
         } finally {
@@ -94,11 +94,11 @@ const ResumePage = () => {
         <div className="flex justify-center py-24">
           <Loader2 className="animate-spin text-primary-soft" size={48} />
         </div>
-      ) : resume ? (
+      ) : resumeContent ? (
         <>
           {/* Floating Navigation Sidebar */}
           <div className="hidden lg:flex fixed right-8 xl:right-16 top-1/2 -translate-y-1/2 z-50 flex-col gap-4 py-5 px-4 glass rounded-2xl border border-border-glass shadow-xl group transition-all duration-300">
-            {resume.sections?.sort((a, b) => a.order - b.order).map((section, idx) => {
+            {resumeContent.sections?.sort((a, b) => a.order - b.order).map((section, idx) => {
               const id = (section.title || section.type).toLowerCase().replace(/\s+/g, '-');
               const isActive = activeSection === id;
               const title = section.title || section.type;
@@ -130,7 +130,7 @@ const ResumePage = () => {
 
           <div className="flex flex-col gap-10 relative">
             
-            {resume.sections?.sort((a, b) => a.order - b.order).map((section, idx) => {
+            {resumeContent.sections?.sort((a, b) => a.order - b.order).map((section, idx) => {
               const sectionId = (section.title || section.type).toLowerCase().replace(/\s+/g, '-');
               return (
               <div key={idx} id={sectionId} className="glass p-6 sm:p-8 rounded-3xl relative z-10 scroll-mt-32">
