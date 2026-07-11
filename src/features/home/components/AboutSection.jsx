@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {AnimatePresence, motion} from 'framer-motion';
+import {AnimatePresence, motion, useInView} from 'framer-motion';
 import {Building2, Calendar, ExternalLink, Mail, MapPin, Maximize2, User} from 'lucide-react';
 import {useAppContext} from '@/context/AppContext';
 import ActionButton from '@/components/shared/ActionButton';
@@ -11,26 +11,29 @@ const staggerContainer = {
     visible: {
         opacity: 1,
         transition: {
-            staggerChildren: 0.1,
+            staggerChildren: 0.08,
         },
     },
     exit: {
         opacity: 0,
         transition: {
-            staggerChildren: 0.05,
+            staggerChildren: 0.02,
         },
     },
 };
 
 const staggerItem = {
-    hidden: { opacity: 0, scale: 0.8, y: 10 },
-    visible: { opacity: 1, scale: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
-    exit: { opacity: 0, scale: 0.8, y: -10, transition: { duration: 0.3, ease: "easeIn" } },
+    hidden: { opacity: 0, scale: 0.5, y: 10 },
+    visible: { opacity: 1, scale: 1, y: 0, transition: { type: "spring", stiffness: 400, damping: 25 } },
+    exit: { opacity: 0, scale: 0.8, y: -10, transition: { duration: 0.2, ease: "easeIn" } },
 };
 
 const AboutSection = () => {
     const {profile, theme} = useAppContext();
     const [currentJourneyIndex, setCurrentJourneyIndex] = useState(0);
+
+    const sectionRef = useRef(null);
+    const isInView = useInView(sectionRef, { once: false, amount: 0.1 });
 
     const [isTechDialogOpen, setIsTechDialogOpen] = useState(false);
     const [isSocialDialogOpen, setIsSocialDialogOpen] = useState(false);
@@ -51,12 +54,12 @@ const AboutSection = () => {
     const techInterestsContainerRef = useRef(null);
 
     useEffect(() => {
-        if (!profile?.journey || profile.journey.length <= 1) return;
+        if (!isInView || !profile?.journey || profile.journey.length <= 1) return;
         const interval = setInterval(() => {
             setCurrentJourneyIndex((prev) => (prev + 1) % profile.journey.length);
         }, 5000); // 5 seconds interval
         return () => clearInterval(interval);
-    }, [profile?.journey]);
+    }, [profile?.journey, isInView]);
 
     // Calculate items per row based on container width using ResizeObserver
     useEffect(() => {
@@ -112,41 +115,41 @@ const AboutSection = () => {
     }
 
     useEffect(() => {
-        if (techRows.length <= 1) return;
+        if (!isInView || techRows.length <= 1) return;
         const interval = setInterval(() => {
             setCurrentTechRowIndex((prev) => (prev + 1) % techRows.length);
         }, 4000);
         return () => clearInterval(interval);
-    }, [techRows.length]);
+    }, [techRows.length, isInView]);
 
     useEffect(() => {
-        if (socialRows.length <= 1) return;
+        if (!isInView || socialRows.length <= 1) return;
         const interval = setInterval(() => {
             setCurrentSocialRowIndex((prev) => (prev + 1) % socialRows.length);
         }, 4000);
         return () => clearInterval(interval);
-    }, [socialRows.length]);
+    }, [socialRows.length, isInView]);
 
     useEffect(() => {
-        if (interestsRows.length <= 1) return;
+        if (!isInView || interestsRows.length <= 1) return;
         const interval = setInterval(() => {
             setCurrentInterestsRowIndex((prev) => (prev + 1) % interestsRows.length);
         }, 3500);
         return () => clearInterval(interval);
-    }, [interestsRows.length]);
+    }, [interestsRows.length, isInView]);
 
     useEffect(() => {
-        if (techInterestsRows.length <= 1) return;
+        if (!isInView || techInterestsRows.length <= 1) return;
         const interval = setInterval(() => {
             setCurrentTechInterestsRowIndex((prev) => (prev + 1) % techInterestsRows.length);
         }, 3500);
         return () => clearInterval(interval);
-    }, [techInterestsRows.length]);
+    }, [techInterestsRows.length, isInView]);
 
     if (!profile) return null;
 
     return (
-        <section id="about"
+        <section ref={sectionRef} id="about"
                  className="min-h-screen  flex flex-col pt-[100px] pb-[20px] px-4 lg:px-8 w-full relative z-10">
             <motion.div
                 className="grow flex flex-col"
@@ -362,22 +365,23 @@ const AboutSection = () => {
                                                     initial="hidden"
                                                     animate="visible"
                                                     exit="exit"
-                                                    className="absolute inset-0 flex flex-wrap justify-center gap-4"
+                                                    className="absolute inset-0 flex flex-wrap items-center justify-center gap-4"
                                                 >
                                                     {techRows[currentTechRowIndex]?.map((tech, idx) => (
                                                         <motion.a key={idx}
                                                              variants={staggerItem}
+                                                             whileHover={{ scale: 1.08 }}
                                                              href={tech.url || '#'}
                                                              target={tech.url ? "_blank" : undefined}
                                                              rel={tech.url ? "noreferrer" : undefined}
-                                                             className="w-12 h-12 rounded-full bg-bg-base/40 border border-border-glass hover:bg-bg-base/80 hover:scale-[1.08] transition-all flex items-center justify-center shadow-sm group"
+                                                             className="w-12 h-12 rounded-full bg-bg-base/40 border border-border-glass hover:bg-bg-base/80 transition-colors flex items-center justify-center shadow-sm group will-change-transform transform-gpu"
                                                              title={tech.name}
                                                         >
                                                             {tech.icon ? (
                                                                 <img src={tech.icon} alt={tech.name}
-                                                                     className="w-6 h-6 object-contain transition-all"/>
+                                                                     className="w-6 h-6 object-contain"/>
                                                             ) : (
-                                                                <div className="text-xs font-black text-text-secondary group-hover:text-primary-highlight">
+                                                                <div className="text-xs font-black text-text-secondary group-hover:text-primary-highlight transition-colors">
                                                                     {tech.name ? tech.name.substring(0, 2).toUpperCase() : '?'}
                                                                 </div>
                                                             )}
@@ -412,24 +416,25 @@ const AboutSection = () => {
                                                     initial="hidden"
                                                     animate="visible"
                                                     exit="exit"
-                                                    className="absolute inset-0 flex flex-wrap justify-center gap-4"
+                                                    className="absolute inset-0 flex flex-wrap items-center justify-center gap-4"
                                                 >
                                                     {socialRows[currentSocialRowIndex]?.map((link, idx) => (
                                                         <motion.a
                                                             key={idx}
                                                             variants={staggerItem}
+                                                            whileHover={{ scale: 1.08 }}
                                                             href={link.url}
                                                             target="_blank"
                                                             rel="noreferrer"
-                                                            className="w-12 h-12 rounded-full bg-bg-base/40 border border-border-glass hover:bg-bg-base/80 hover:scale-[1.08] transition-all flex items-center justify-center shadow-sm group"
+                                                            className="w-12 h-12 rounded-full bg-bg-base/40 border border-border-glass hover:bg-bg-base/80 transition-colors flex items-center justify-center shadow-sm group will-change-transform transform-gpu"
                                                             title={link.name}
                                                         >
                                                             {link.icon ? (
                                                                 <img src={link.icon} alt={link.name}
-                                                                     className="w-6 h-6 object-contain transition-all"/>
+                                                                     className="w-6 h-6 object-contain"/>
                                                             ) : (
                                                                 <ExternalLink size={20}
-                                                                              className="text-text-secondary group-hover:text-text-primary"/>
+                                                                              className="text-text-secondary group-hover:text-text-primary transition-colors"/>
                                                             )}
                                                         </motion.a>
                                                     ))}
@@ -455,12 +460,12 @@ const AboutSection = () => {
                                                     initial="hidden"
                                                     animate="visible"
                                                     exit="exit"
-                                                    className="absolute inset-0 flex flex-wrap justify-center gap-2"
+                                                    className="absolute inset-0 flex flex-wrap items-center justify-center gap-2"
                                                 >
                                                     {interestsRows[currentInterestsRowIndex]?.map((interest, idx) => (
                                                         <motion.span key={idx}
                                                               variants={staggerItem}
-                                                              className="inline-flex items-center justify-center px-3 py-1.5 leading-none bg-bg-base/50 border border-border-glass rounded-full text-xs font-medium text-text-primary hover:bg-bg-base/80 transition-colors whitespace-nowrap">
+                                                              className="inline-flex items-center justify-center px-3 py-1.5 leading-none bg-bg-base/50 border border-border-glass rounded-full text-xs font-medium text-text-primary hover:bg-bg-base/80 transition-colors whitespace-nowrap will-change-transform transform-gpu">
                                                           {interest}
                                                         </motion.span>
                                                     ))}
@@ -486,12 +491,12 @@ const AboutSection = () => {
                                                     initial="hidden"
                                                     animate="visible"
                                                     exit="exit"
-                                                    className="absolute inset-0 flex flex-wrap justify-center gap-2"
+                                                    className="absolute inset-0 flex flex-wrap items-center justify-center gap-2"
                                                 >
                                                     {techInterestsRows[currentTechInterestsRowIndex]?.map((interest, idx) => (
                                                         <motion.span key={idx}
                                                               variants={staggerItem}
-                                                              className="inline-flex items-center justify-center px-3 py-1.5 leading-none bg-bg-base/50 border border-border-glass rounded-full text-xs font-medium text-text-primary hover:bg-bg-base/80 transition-colors whitespace-nowrap">
+                                                              className="inline-flex items-center justify-center px-3 py-1.5 leading-none bg-bg-base/50 border border-border-glass rounded-full text-xs font-medium text-text-primary hover:bg-bg-base/80 transition-colors whitespace-nowrap will-change-transform transform-gpu">
                                                           {interest}
                                                         </motion.span>
                                                     ))}

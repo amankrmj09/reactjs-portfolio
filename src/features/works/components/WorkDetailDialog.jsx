@@ -135,8 +135,8 @@ const WorkDetailDialog = () => {
                 {work.links?.live && (
                   <div className="flex-shrink-0 ml-2">
                     {/* Mobile: Circular Icon */}
-                    <a href={work.links.live} target="_blank" rel="noreferrer" className="sm:hidden w-10 h-10 flex items-center justify-center rounded-full bg-transparent ring-1 ring-border-glass hover:ring-2 hover:ring-primary-soft hover:bg-bg-base/40 text-text-secondary hover:text-primary-soft transition-all group" title="Live Demo">
-                      <Globe size={20} className="drop-shadow-[0_0_8px_rgba(74,222,128,0.5)]" />
+                    <a href={work.links.live} target="_blank" rel="noreferrer" className="sm:hidden w-10 h-10 flex items-center justify-center rounded-full bg-transparent ring-1 ring-border-glass hover:ring-2 hover:ring-text-primary hover:bg-bg-base/40 text-text-primary transition-all group" title="Live Demo">
+                      <Globe size={20} />
                     </a>
                     {/* Desktop: Full Button with Animation */}
                     <div className="hidden sm:block">
@@ -144,8 +144,8 @@ const WorkDetailDialog = () => {
                         href={work.links.live} 
                         text="Live Demo" 
                         icon={Globe}
-                        hoverBgClass="bg-primary-soft/30"
-                        iconClass="group-hover:text-primary-soft group-hover:drop-shadow-[0_0_8px_rgba(93,173,226,0.8)] text-text-secondary"
+                        hoverBgClass="bg-slate-400/30"
+                        iconClass="group-hover:text-text-primary text-text-secondary"
                         className="h-[40px] px-4 sm:h-[48px] sm:px-6"
                       />
                     </div>
@@ -181,7 +181,7 @@ const WorkDetailDialog = () => {
                 {work.links.repo && (
                   <>
                     <a href={work.links.repo} target="_blank" rel="noreferrer" className="sm:hidden w-12 h-12 flex items-center justify-center rounded-full bg-transparent ring-1 ring-border-glass hover:ring-2 hover:ring-text-primary hover:bg-bg-base/40 text-text-primary transition-all group" title="Repository">
-                      <FaGithub size={22} className="drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" />
+                      <FaGithub size={22} />
                     </a>
                     <div className="hidden sm:block">
                       <ProjectLinkButton 
@@ -189,7 +189,7 @@ const WorkDetailDialog = () => {
                         text="Repository" 
                         icon={FaGithub}
                         hoverBgClass="bg-slate-400/30"
-                        iconClass="group-hover:text-text-primary group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)] text-text-secondary"
+                        iconClass="group-hover:text-text-primary text-text-secondary"
                         className="h-[48px] px-6"
                       />
                     </div>
@@ -198,7 +198,7 @@ const WorkDetailDialog = () => {
                 {work.links.playStore && (
                   <>
                     <a href={work.links.playStore} target="_blank" rel="noreferrer" className="sm:hidden w-12 h-12 flex items-center justify-center rounded-full bg-transparent ring-1 ring-border-glass hover:ring-2 hover:ring-[#34A853] hover:bg-[#34A853]/20 text-[#34A853] transition-all group" title="Play Store">
-                      <FaGooglePlay size={20} className="drop-shadow-[0_0_8px_rgba(52,168,83,0.5)]" />
+                      <FaGooglePlay size={20} />
                     </a>
                     <div className="hidden sm:block">
                       <ProjectLinkButton 
@@ -206,7 +206,7 @@ const WorkDetailDialog = () => {
                         text="Play Store" 
                         icon={FaGooglePlay}
                         hoverBgClass="bg-emerald-500/40"
-                        iconClass="group-hover:text-[#34A853] group-hover:drop-shadow-[0_0_8px_rgba(52,168,83,0.8)] text-text-secondary"
+                        iconClass="group-hover:text-[#34A853] text-text-secondary"
                         className="h-[48px] px-6"
                       />
                     </div>
@@ -215,7 +215,7 @@ const WorkDetailDialog = () => {
                 {work.links.appStore && (
                   <>
                     <a href={work.links.appStore} target="_blank" rel="noreferrer" className="sm:hidden w-12 h-12 flex items-center justify-center rounded-full bg-transparent ring-1 ring-border-glass hover:ring-2 hover:ring-[#007AFF] hover:bg-[#007AFF]/20 text-[#007AFF] transition-all group" title="App Store">
-                      <FaApple size={22} className="drop-shadow-[0_0_8px_rgba(0,122,255,0.5)]" />
+                      <FaApple size={22} />
                     </a>
                     <div className="hidden sm:block">
                       <ProjectLinkButton 
@@ -223,7 +223,7 @@ const WorkDetailDialog = () => {
                         text="App Store" 
                         icon={FaApple}
                         hoverBgClass="bg-blue-500/40"
-                        iconClass="group-hover:text-[#007AFF] group-hover:drop-shadow-[0_0_8px_rgba(0,122,255,0.8)] text-text-secondary"
+                        iconClass="group-hover:text-[#007AFF] text-text-secondary"
                         className="h-[48px] px-6"
                       />
                     </div>
@@ -232,7 +232,7 @@ const WorkDetailDialog = () => {
                 {work.links.figma && (
                   <>
                     <a href={work.links.figma} target="_blank" rel="noreferrer" className="sm:hidden w-12 h-12 flex items-center justify-center rounded-full bg-transparent ring-1 ring-border-glass hover:ring-2 hover:ring-[#F24E1E] hover:bg-[#F24E1E]/20 text-[#F24E1E] transition-all group" title="Figma">
-                      <FaFigma size={20} className="drop-shadow-[0_0_8px_rgba(242,78,30,0.5)]" />
+                      <FaFigma size={20} />
                     </a>
                     <div className="hidden sm:block">
                       <ProjectLinkButton 
@@ -240,7 +240,7 @@ const WorkDetailDialog = () => {
                         text="Figma" 
                         icon={FaFigma}
                         hoverBgClass="bg-[#F24E1E]/40"
-                        iconClass="group-hover:text-[#F24E1E] group-hover:drop-shadow-[0_0_8px_rgba(242,78,30,0.8)] text-text-secondary"
+                        iconClass="group-hover:text-[#F24E1E] text-text-secondary"
                         className="h-[48px] px-6"
                       />
                     </div>

@@ -45,8 +45,7 @@ const CertificateDetailDialog = () => {
               <img 
                 src={cert.media?.imageKey || cert.imageUrl} 
                 alt={cert.title} 
-                className="max-w-full rounded-2xl shadow-[0_10px_40px_rgba(255,255,255,0.1)] object-contain" 
-                style={{ maxHeight: '600px' }} 
+                className="max-w-full max-h-[200px] sm:max-h-[250px] md:max-h-[350px] lg:max-h-[400px] xl:max-h-[450px] rounded-2xl shadow-theme-img object-contain" 
               />
             </div>
           )}

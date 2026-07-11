@@ -19,6 +19,9 @@
   --color-text-secondary: var(--text-secondary);
   --color-btn-hover-overlay: var(--btn-hover-overlay);
 
+  --shadow-theme-img: 0 10px 40px color-mix(in srgb, var(--theme-white) 20%, transparent);
+  --shadow-theme-dot: 0 0 10px color-mix(in srgb, var(--theme-white) 50%, transparent);
+
   --color-white: var(--theme-white);
   --color-slate-900: var(--theme-slate-900);
   --color-slate-800: var(--theme-slate-800);
@@ -171,20 +174,7 @@
     border-color: var(--primary-soft);
   }
 
-  /* Global Hover Delay Enforcement */
-  @media (hover: hover) {
-    /* 1. Base state: 0s delay when NOT hovered (snap back immediately) */
-    [class*="hover:"], 
-    [class*="group-hover:"] {
-      transition-delay: 0s !important;
-    }
-    
-    /* 2. Hover state: wait 1 second before applying any hover styles */
-    [class*="hover:"]:hover,
-    .group:hover [class*="group-hover:"] {
-      transition-delay: 1s !important;
-    }
-  }
+
 }
 
 @keyframes blob {

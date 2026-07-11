@@ -37,7 +37,7 @@ const ProjectLinkButton = ({
 
       <div className="relative z-10 flex items-center justify-center">
         {Icon && <span className={`transition-all duration-300 ${iconClass}`}><Icon size={18} /></span>}
-        {text && <span className="ml-2 transition-colors duration-300 group-hover:text-white group-hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.8)]">{text}</span>}
+        {text && <span className="ml-2 transition-colors duration-300 group-hover:text-white">{text}</span>}
       </div>
     </motion.a>
   );
