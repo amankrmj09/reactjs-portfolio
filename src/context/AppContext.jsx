@@ -19,7 +19,14 @@ export const AppProvider = ({ children }) => {
   const [selectedCertId, setSelectedCertId] = useState(null);
   const [isContactOpen, setContactOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [theme, setTheme] = useState(localStorage.getItem('theme') || 'dark');
+  const [theme, setTheme] = useState(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) return savedTheme;
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+      return 'light';
+    }
+    return 'dark';
+  });
 
   // New states for full data caching
   const [allWorks, setAllWorks] = useState([]);
