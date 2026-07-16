@@ -96,4 +96,29 @@ src/
 
 ## Screenshots
 
-*(Screenshots will be added later)*
+### Home
+<img src="./screenshot/01_home_section.png" width="600" />
+
+### About Me
+<img src="./screenshot/02_about_me_section.png" width="600" />
+
+### Works
+<img src="./screenshot/03_00_featured_works_section.png" width="600" />
+<br />
+<img src="./screenshot/03_01_works_details.png" width="600" />
+<br />
+<img src="./screenshot/03_02_works_details.png" width="600" />
+<br />
+<img src="./screenshot/03_03_all_works.png" width="600" />
+
+### Certificates
+<img src="./screenshot/04_00_featured_certificates_section.png" width="600" />
+<br />
+<img src="./screenshot/04_01_certificate_details.png" width="600" />
+<br />
+<img src="./screenshot/04_02_certificate_details.png" width="600" />
+<br />
+<img src="./screenshot/04_03_all_certificates.png" width="600" />
+
+### Contact
+<img src="./screenshot/05_contacts_section.png" width="600" />
