@@ -42,7 +42,7 @@ export const useInfiniteScroll = (fetchFn, pageSize = 6) => {
 
     // Intersection observer on sentinel
     useEffect(() => {
-        if (!sentinelRef.current) return;
+        if (initialLoading || !sentinelRef.current) return;
         const observer = new IntersectionObserver(
             (entries) => {
                 if (entries[0].isIntersecting && hasMore && !isFetchingRef.current) {
@@ -53,7 +53,7 @@ export const useInfiniteScroll = (fetchFn, pageSize = 6) => {
         );
         observer.observe(sentinelRef.current);
         return () => observer.disconnect();
-    }, [hasMore, page, fetchPage]);
+    }, [hasMore, page, fetchPage, initialLoading]);
 
     return { items, loading, initialLoading, hasMore, sentinelRef };
 };
